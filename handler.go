@@ -15,7 +15,7 @@ deluge:
   TORRENT_ID
   TORRENT_NAME
   TORRENT_DIR
-  IMPORTANT=Requires deluge web api to clean finished torrents to prevent garbage collection
+  IMPORTANT: Requires deluge web api to clean finished torrents to prevent garbage collection
 */
 
 type Handler struct {

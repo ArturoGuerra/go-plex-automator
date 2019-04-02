@@ -44,18 +44,18 @@ func main () {
     os.Exit(3)
   }
 
-  nzbGet := args.NzbGet;
-  deluge := args.Deluge;
-
   if err != nil {
     os.Exit(3)
   }
 
+  deluge := &args.Deluge
+  nzbget := &args.NzbGet
+
   switch args.Mode {
     case "nzbget":
-      plex.NzbGet(&nzbGet)
+      plex.NzbGet(nzbget)
 
     case "deluge":
-      plex.Deluge(&deluge)
+      plex.Deluge(deluge)
   }
 }

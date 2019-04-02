@@ -7,6 +7,7 @@ import (
   "bytes"
   "os"
   "utils"
+  "errors"
 )
 
 type (
@@ -22,14 +23,17 @@ type (
 )
 
 func (f FileBot) New(c *config.Configuration) *FileBot {
+  csr := &c.SickRage
+  ccp := &c.CouchPotato
+  cfb := &c.FileBot
   return &FileBot{
     c.Plex,
-    c.SickRage.Api,
-    c.SickRage.Url,
-    c.CouchPotato.Api,
-    c.CouchPotato.Url,
-    c.FileBot.Logs,
-    c.FileBot.Amc,
+    *csr.Api,
+    *csr.Url,
+    *ccp.Api,
+    *ccp.Url,
+    *cfb.Logs,
+    *cfb.Amc,
   }
 }
 
@@ -68,7 +72,7 @@ func (f *FileBot) Anime(root string) error {
 
 }
 
-func FormatCommand (source, callback string) string {
+func FormatCommand (source, callback string, f *FileBot) string {
   var buf bytes.Buffer
   buf.WriteString("/usr/bin/filebot -script fn:amc --output ")
   buf.WriteString(f.DestinationDir)
@@ -89,7 +93,7 @@ func FormatCommand (source, callback string) string {
 }
 
 func (f *FileBot) Process(source, callback string) error {
-  command := FormatCommand(source, callback)
+  command := FormatCommand(source, callback, &f)
   cmd := exec.Command(command)
   out, err := cmd.CombinedOutput()
   if err != nil {
@@ -109,6 +113,8 @@ func Handle(f *FileBot) (mode, source string) error {
     err = f.Shows(source)
   case "anime":
     err = f.Anime(source)
+  default:
+    err = errors.New("Invalid Mode")
   }
 
   return err

@@ -5,6 +5,7 @@ import (
   "filebot"
   "encoding/json"
   "config"
+  "errors"
   "bytes"
   "utils"
 )
@@ -29,19 +30,40 @@ type (
 )
 
 func (d Deluge) New(c *config.Configuration, f *filebot.FileBot) *Deluge {
+  dc := &c.Deluge
   return &Deluge{
-    c.Port,
-    c.Host,
-    c.User,
-    c.Password,
-    c.Api,
-    c.TorrentsDir,
+    *dc.Port,
+    *dc.Host,
+    *dc.User,
+    *dc.Password,
+    *dc.Api,
+    *dc.TorrentsDir,
     1,
     &f,
 }
 
-func (d *Deluge) Handle(a *utils.Deluge) error {
+func (d *Deluge) Handle(args *utils.Deluge) error {
+  var mode string
+  var err error
+  filebot := d.FileBot
 
+  switch args.TorrentDir {
+  case d.TorrentsDir + "/Shows":
+    mode = "shows"
+  case d.TorrentsDir + "/Movies":
+    mode = "movies"
+  default:
+    err = errors.New("Invalid torrent dir")
+    return err
+  }
+
+  err = filebot.Handle(mode, d.TorrentsDir)
+  if err != nil {
+    return err
+  }
+
+  err = d.Clean(args.TorrentId)
+  return err
 }
 
 func (d *Deluge) Clean(id int) error {

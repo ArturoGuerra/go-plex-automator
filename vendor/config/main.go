@@ -22,17 +22,18 @@ type (
   }
 
   Deluge struct {
-    Port string `json:"port"`
-    Host string `json:"host"`
-    User string `json:"user"`
+    Api string `json:"api"`
     Password string `json:"password"`
     TorrentsDir string `json:"torrents_dir"`
   }
 
+  NzbGet struct {
+    BaseDir string `json:"base_dir"`
+  }
+
   Configuration struct {
-    Scripts string `json:"scripts"`
     Plex string `json:"plex"`
-    Nzb string `json:"nzb"`
+    NzbGet NzbGet `json:"nzbget"`
     Deluge Deluge `json:"deluge"`
     FileBot FileBot `json:"filebot"`
     SickRage SickRage `json:"sickrage"`
