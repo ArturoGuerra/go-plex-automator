@@ -1,8 +1,9 @@
-package main
+package handler
 
 import (
-  "os"
   "utils"
+  "flag"
+  "errors"
 )
 /*
 mode = nzbget, deluge
@@ -20,9 +21,9 @@ deluge:
 
 type Handler struct {
   Args *utils.Args
-)
+}
 
-func New(h Handler) *Handler {
+func New() *Handler {
   return &Handler{}
 }
 
@@ -36,7 +37,7 @@ func stringInArray(str string, list []string) bool {
   return false
 }
 
-func Parse(h *Handler) (*Args, error) {
+func (h *Handler) Parse() (*utils.Args, error) {
   validModes := []string{"nzbget", "deluge"}
   modePtr := flag.String("mode", "[nzbget, deluge]", "string")
 

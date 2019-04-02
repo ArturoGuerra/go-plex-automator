@@ -2,6 +2,7 @@ package main
 
 import (
   "config"
+  "handler"
   "filebot"
   "deluge"
   "nzbget"
@@ -25,37 +26,42 @@ func (p PlexAuto) New(configFilename string) *PlexAuto {
   }
 
   FileBot := filebot.New(&config)
-  Deluge := deluge.New(&config, &FileBot)
-  NzbGet := nzbget.New(&config, &FileBot)
+  Deluge := deluge.New(&config, FileBot)
+  NzbGet := nzbget.New(&config, FileBot)
 
   return &PlexAuto{
     Config: &config,
-    Filebot: &FileBot,
-    Deluge: &Deluge,
-    NzbGet: &NzbGet,
+    FileBot: FileBot,
+    Deluge: Deluge,
+    NzbGet: NzbGet,
   }
 }
 
 func main () {
-  plex := PlexAuto.New("./config.json")
-  handler := Handler.New()
-  args, err := handler.Parse()
+  plex := new(PlexAuto)
+  plex = plex.New("./config.json")
+  h := handler.New()
+  args, err := h.Parse()
   if err != nil {
+    fmt.Println(err)
     os.Exit(3)
   }
 
   if err != nil {
+    fmt.Println(err)
     os.Exit(3)
   }
 
-  deluge := &args.Deluge
-  nzbget := &args.NzbGet
+  deluge := args.Deluge
+  nzbget := args.NzbGet
 
+  NzbGet := plex.NzbGet
+  Deluge := plex.Deluge
   switch args.Mode {
     case "nzbget":
-      plex.NzbGet(nzbget)
+      NzbGet.Handle(nzbget)
 
     case "deluge":
-      plex.Deluge(deluge)
+      Deluge.Handle(deluge)
   }
 }

@@ -2,12 +2,10 @@ package filebot
 
 import (
   "config"
-  "os"
-  "errors"
   "bytes"
-  "os"
-  "utils"
   "errors"
+  "os/exec"
+  "fmt"
 )
 
 type (
@@ -22,26 +20,25 @@ type (
   }
 )
 
-func (f FileBot) New(c *config.Configuration) *FileBot {
-  csr := &c.SickRage
-  ccp := &c.CouchPotato
-  cfb := &c.FileBot
+func New(c *config.Configuration) *FileBot {
+  csr := c.SickRage
+  ccp := c.CouchPotato
+  cfb := c.FileBot
   return &FileBot{
     c.Plex,
-    *csr.Api,
-    *csr.Url,
-    *ccp.Api,
-    *ccp.Url,
-    *cfb.Logs,
-    *cfb.Amc,
+    csr.Api,
+    csr.Url,
+    ccp.Api,
+    ccp.Url,
+    cfb.Logs,
+    cfb.Amc,
   }
 }
 
 
 func (f *FileBot) Movies(root string) error {
-  base := root + "/" + "Movies"
   callback := "curl " + f.CouchPotatoUrl + "/api/" + f.CouchPotatoApi + "/manage.update"
-  err := f.Process(source, callback)
+  err := f.Process(root, callback)
   if err != nil {
     return err
   }
@@ -50,9 +47,8 @@ func (f *FileBot) Movies(root string) error {
 }
 
 func (f *FileBot) Shows(root string) error {
-  base := root + "/" + "Shows"
   callback := "curl " + f.SickRageUrl + "/api/" + f.SickRageApi + "?cmd=show.refresh&tvdbid={info.id}"
-  err := f.Process(source, callback)
+  err := f.Process(root, callback)
   if err != nil {
     return err
   }
@@ -61,9 +57,8 @@ func (f *FileBot) Shows(root string) error {
 }
 
 func (f *FileBot) Anime(root string) error {
-  source := root + "/" + "Anime"
   callback := "curl " + f.SickRageUrl + "/api/" + f.SickRageApi + "?cmd=show.refresh&tvdbid={info.id}"
-  err := f.Process(source, callback)
+  err := f.Process(root, callback)
   if err != nil {
     return err
   }
@@ -93,7 +88,7 @@ func FormatCommand (source, callback string, f *FileBot) string {
 }
 
 func (f *FileBot) Process(source, callback string) error {
-  command := FormatCommand(source, callback, &f)
+  command := FormatCommand(source, callback, f)
   cmd := exec.Command(command)
   out, err := cmd.CombinedOutput()
   if err != nil {
@@ -104,8 +99,8 @@ func (f *FileBot) Process(source, callback string) error {
   return nil
 }
 
-func Handle(f *FileBot) (mode, source string) error {
-  err := nil
+func (f *FileBot) Handle(mode, source string) error {
+  var err error
   switch mode {
   case "movies":
     err = f.Movies(source)

@@ -8,7 +8,7 @@ type (
   }
 
   Deluge struct {
-    TorrentId int // TORRENT_ID
+    TorrentId string // TORRENT_ID
     TorrentName string // TORRENT_NAME
     TorrentDir string // TORRENT_DIR
   }

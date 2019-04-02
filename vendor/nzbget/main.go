@@ -2,9 +2,9 @@ package nzbget
 
 import (
   "filebot"
-  "encoding/json"
   "config"
   "utils"
+  "strconv"
   "errors"
   "os"
 )
@@ -18,11 +18,11 @@ type (
   }
 )
 
-func (n NzbGet) New(c *config.Configuration, f *filebot.FileBot) *NzbGet {
+func New(c *config.Configuration, f *filebot.FileBot) *NzbGet {
   nc := &c.NzbGet
   return &NzbGet{
-    *nc.BaseDir,
-    &f,
+    nc.BaseDir,
+    f,
     93,
     94,
 
@@ -37,25 +37,23 @@ func (n *NzbGet) Handle(args *utils.NzbGet) error {
   case "SUCCESS":
     err = filebot.Handle(args.NzbppCategory, n.BaseDir)
     if err != nil {
-      os.Exit(e.Error)
+      os.Exit(n.Error)
       return err
     }
 
-    os.Exit(e.Success)
+    os.Exit(n.Success)
     return nil
 
   case "FAILURE":
     os.Exit(n.Error)
-    err = errors.New(n.Error)
+    err = errors.New(strconv.Itoa(n.Error))
     return err
 
   default:
     os.Exit(n.Error)
-    err = errors.New(n.Error)
+    err = errors.New(strconv.Itoa(n.Error))
     return err
   }
 
   return nil
 }
-
-func

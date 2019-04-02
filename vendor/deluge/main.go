@@ -12,9 +12,6 @@ import (
 
 type (
   Deluge struct {
-    Port string
-    Host string
-    User string
     Password string
     Api string
     TorrentsDir string
@@ -23,23 +20,21 @@ type (
   }
 
   RequestBody struct {
-    Id: int `json:"id"`
+    Id int `json:"id"`
     Method string `json:"method"`
     Params []string `json:"params"`
   }
 )
 
-func (d Deluge) New(c *config.Configuration, f *filebot.FileBot) *Deluge {
-  dc := &c.Deluge
+func New(c *config.Configuration, f *filebot.FileBot) *Deluge {
+  dc := c.Deluge
   return &Deluge{
-    *dc.Port,
-    *dc.Host,
-    *dc.User,
-    *dc.Password,
-    *dc.Api,
-    *dc.TorrentsDir,
+    dc.Password,
+    dc.Api,
+    dc.TorrentsDir,
     1,
-    &f,
+    f,
+  }
 }
 
 func (d *Deluge) Handle(args *utils.Deluge) error {
@@ -63,38 +58,42 @@ func (d *Deluge) Handle(args *utils.Deluge) error {
   }
 
   err = d.Clean(args.TorrentId)
-  return err
+  if err != nil {
+      return err
+  }
+
+  return nil
 }
 
-func (d *Deluge) Clean(id int) error {
+func (d *Deluge) Clean(id string) error {
   client := http.Client{}
   buf := new(bytes.Buffer)
   body := &RequestBody{
-    c.Rid,
+    d.Rid,
     "auth.login",
-    []string{c.Password},
+    []string{d.Password},
   }
   json.NewEncoder(buf).Encode(body)
-  resp, err := client.Post(d.Api, "application/json", buf)
+  _, err := client.Post(d.Api, "application/json", buf)
   if err != nil {
     return err
   }
 
-  c.Rid = c.Rid + 1
+  d.Rid = d.Rid + 1
 
-  client = http.Client{
-    Jar: resp.Cookies(),
-  }
+  client = http.Client{}
 
   buf = new(bytes.Buffer)
   body = &RequestBody{
-    c.Rid,
+    d.Rid,
     "webapi.remove_torrent",
-    []string{id,true}
+    []string{id,"true"},
   }
   json.NewEncoder(buf).Encode(body)
   _, err = client.Post(d.Api, "application/json", buf)
   if err != nil {
     return err
   }
+
+  return nil
 }
