@@ -8,21 +8,16 @@ import (
   "nzbget"
   "os"
   "fmt"
-  "flag"
 )
 
 var configDir string
 
-func init () {
-    flag.StringVar(&configDir, "configdir", "configdir", "Configuration file dir")
-}
 
 type PlexAuto struct {
   Config *config.Configuration
   FileBot *filebot.FileBot
   Deluge *deluge.Deluge
   NzbGet *nzbget.NzbGet
-  configDir string
 
 }
 
@@ -46,8 +41,6 @@ func (p PlexAuto) New(configFilename string) *PlexAuto {
 }
 
 func main () {
-  plex := new(PlexAuto)
-  plex = plex.New(configDir)
   h := handler.New()
   args, err := h.Parse()
   if err != nil {
@@ -59,6 +52,9 @@ func main () {
     fmt.Println(err)
     os.Exit(3)
   }
+
+  plex := new(PlexAuto)
+  plex = plex.New(args.ConfigDir)
 
   switch args.Mode {
     case "nzbget":

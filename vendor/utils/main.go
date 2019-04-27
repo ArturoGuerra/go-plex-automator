@@ -17,5 +17,6 @@ type (
     Mode string
     NzbGet *NzbGet
     Deluge *Deluge
+    ConfigDir string
   }
 )
