@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# Builds GoPlex Binary
+
+rm -f bin/goplex
+go build -o ./bin/goplex main.go
+chmod a+x bin/goplex

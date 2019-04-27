@@ -1,0 +1,21 @@
+#!/bin/sh
+
+###########################################
+### NZBGET POST-PROCESSING SCRIPT       ###
+
+# Print test message.
+#
+# This is a test script. It prints one message to log. Here in the
+# long description we could write instructions for user.
+#
+# The long description can have multiple paragraphs when needed. Like
+# this one.
+
+### NZBGET POST-PROCESSING SCRIPT       ###
+###########################################
+
+SCRIPTDIR=$(dirname $(readlink -f $0))
+
+$configdir=$SCRIPTDIR/config.json
+
+$SCRIPTDIR/goplex -mode="nzbget" -configdir=$configdir -nzbget-status=$NZBPP_TOTALSTATUS -nzbget-category=$NZBPP_CATEGORY -nzb-directory=$NZBPP_DIRECTORY

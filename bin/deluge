@@ -1,0 +1,7 @@
+#!/bin/sh
+
+SCRIPTDIR=$(dirname $(readlink -f $0))
+
+$configdir=$SCRIPTDIR/config.json
+
+$SCRIPTDIR/goplex -mode="deluge" -deluge-torrentid=$1 --deluge-torrentname=$2 --deluge-torrentdir=$3 -configdir=$configdir

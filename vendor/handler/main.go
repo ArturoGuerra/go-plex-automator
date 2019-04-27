@@ -42,7 +42,7 @@ func (h *Handler) Parse() (*utils.Args, error) {
   modePtr := flag.String("mode", "[nzbget, deluge]", "string")
 
   nzbgetStatusPtr := flag.String("nzbget-status", "[SUCCESS, FAILURE]", "string")
-  nzbgetCategoryPtr := flag.String("nzbget-Category", "[movies, tv, anime]", "string")
+  nzbgetCategoryPtr := flag.String("nzbget-category", "[movies, tv, anime]", "string")
   nzbgetDirectoryPtr := flag.String("nzbget-directory", "nzbget source dir", "string")
 
   delugeTorrentIdPtr := flag.String("deluge-torrentid", "torrent id string", "string")
