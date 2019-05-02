@@ -36,81 +36,82 @@ func New(c *config.Configuration) *FileBot {
 }
 
 
-func (f *FileBot) Movies(root string) error {
+func (f *FileBot) Movies(root string) {
   callback := "curl " + f.CouchPotatoUrl + "/api/" + f.CouchPotatoApi + "/manage.update"
-  err := f.Process(root, callback)
-  if err != nil {
-    return err
-  }
-
-  return nil
+  root = root + "/Movies"
+  f.Process(root, callback)
 }
 
-func (f *FileBot) Shows(root string) error {
+func (f *FileBot) Shows(root string) {
   callback := "curl " + f.SickRageUrl + "/api/" + f.SickRageApi + "?cmd=show.refresh&tvdbid={info.id}"
-  err := f.Process(root, callback)
-  if err != nil {
-    return err
-  }
-
-  return nil
+  root = root + "/Shows"
+  f.Process(root, callback)
 }
 
-func (f *FileBot) Anime(root string) error {
+func (f *FileBot) Anime(root string) {
   callback := "curl " + f.SickRageUrl + "/api/" + f.SickRageApi + "?cmd=show.refresh&tvdbid={info.id}"
-  err := f.Process(root, callback)
-  if err != nil {
-    return err
-  }
-
-  return nil
+  root = root + "/Anime"
+  f.Process(root, callback)
 
 }
 
-func FormatCommand (source, callback string, f *FileBot) string {
-  var buf bytes.Buffer
-  buf.WriteString("/usr/bin/filebot -script fn:amc --output ")
-  buf.WriteString(f.DestinationDir)
-  buf.WriteString(" --action copy -non-strict ")
-  buf.WriteString(source)
-  buf.WriteString(" --conflict override --log-file ")
-  buf.WriteString(f.AmcLogs)
-  buf.WriteString(" --def subtitles=en,es --def excludeList=")
-  buf.WriteString(f.AmcExclude)
-  buf.WriteString(" --def clean=y --def unsorted=y --def extras=y --def seriesFormat=")
-  buf.WriteString("\"" + f.DestinationDir + "/TV Shows/{n.replaceAll(/'/)}/Season {s.pad(2)}/{n} - {s00e00} - {t}\"")
-  buf.WriteString(" --def animeFormat=")
-  buf.WriteString("\"" + f.DestinationDir + "/Anime/{n.replaceAll(/'/)}/Season {s.pad(2)}/{n} - {s00e00} - {t}\"")
-  buf.WriteString(" --def exec=\"" + callback + "\"")
-  buf.WriteString(" --def minLengthMS=300000")
-  result := buf.String()
-  return result
+func FormatCommand(source, callback string, f *FileBot) []string {
+    var args []string
+
+    args = append(args, "-script", "fn:amc")
+    args = append(args, "--output", f.DestinationDir)
+    args = append(args, "--action", "copy")
+    args = append(args, "-non-strict")
+    args = append(args, source)
+    args = append(args, "--conflict", "override")
+    args = append(args, "--log-file", f.AmcLogs)
+
+    args = append(args, "--def", "subtitles=en,es")
+    args = append(args, "--def", "excludeList="+f.AmcExclude)
+    args = append(args, "--def", "clean=y")
+    args = append(args, "--def", "unsorted=y")
+    args = append(args, "--def", "extras=y")
+    args = append(args, "--def", "seriesFormat=\"" + f.DestinationDir + "/TV Shows/{n.replaceAll(/'/)}/Season {s.pad(2)}/{n} - {s00e00} - {t}\"")
+    args = append(args, "--def", "animeFormat=\"" + f.DestinationDir + "/Anime/{n.replaceAll(/'/)}/Season {s.pad(2)}/{n} - {s00e00} - {t}\"")
+    args = append(args, "--def", "exec=\"" + callback + "\"")
+    args = append(args, "--def", "minLengthMS=300000")
+    return args
 }
 
-func (f *FileBot) Process(source, callback string) error {
+func (f *FileBot) Process(source, callback string) {
   command := FormatCommand(source, callback, f)
-  cmd := exec.Command(command)
-  out, err := cmd.CombinedOutput()
-  if err != nil {
-    return err
-  }
+  fmt.Println(command)
+  cmd := exec.Command("filebot", command...)
+  var out bytes.Buffer
+  var stderr bytes.Buffer
+  cmd.Stdout = &out
+  cmd.Stderr = &stderr
 
-  fmt.Println(string(out))
-  return nil
+  err := cmd.Start()
+  if err != nil {
+      fmt.Println(err)
+  }
+  cmd.Wait()
+
+  fmt.Println(stderr.String())
+  fmt.Println(out.String())
 }
 
 func (f *FileBot) Handle(mode, source string) error {
   var err error
   switch mode {
   case "movies":
-    err = f.Movies(source)
+    f.Movies(source)
   case "shows":
-    err = f.Shows(source)
+    f.Shows(source)
+  case "tv":
+    f.Shows(source)
   case "anime":
-    err = f.Anime(source)
+    f.Anime(source)
   default:
     err = errors.New("Invalid Mode")
   }
+
 
   return err
 }

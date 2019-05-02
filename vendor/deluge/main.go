@@ -8,6 +8,7 @@ import (
   "errors"
   "bytes"
   "utils"
+  "fmt"
 )
 
 type (
@@ -45,14 +46,18 @@ func (d *Deluge) Handle(args *utils.Deluge) error {
   switch args.TorrentDir {
   case d.TorrentsDir + "/Shows":
     mode = "shows"
+    fmt.Println("Shows deluge dir")
   case d.TorrentsDir + "/Movies":
     mode = "movies"
+    fmt.Println("Movies deluge dir")
   default:
     err = errors.New("Invalid torrent dir")
+    fmt.Println("Invalid deluge dir")
     return err
   }
 
   err = filebot.Handle(mode, d.TorrentsDir)
+  fmt.Println(err)
   if err != nil {
     return err
   }

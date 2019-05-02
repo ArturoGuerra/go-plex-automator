@@ -2,5 +2,6 @@
 
 SCRIPTDIR=$(dirname $(readlink -f $0))
 
-CONFIG="$SCRIPTDIR/config.json"
-$SCRIPTDIR/goplex -mode="deluge" -deluge-torrentid=$1 --deluge-torrentname=$2 --deluge-torrentdir=$3 -configdir="$CONFIG"
+configdir=$SCRIPTDIR/config.json
+
+$SCRIPTDIR/goplex -mode="deluge" -configdir=$configdir -deluge-torrentid=$1 -deluge-torrentname=$2 -deluge-torrentdir=$3

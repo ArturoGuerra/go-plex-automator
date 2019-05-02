@@ -58,9 +58,11 @@ func main () {
 
   switch args.Mode {
     case "nzbget":
+      fmt.Println("Running in nzbget mode")
       plex.NzbGet.Handle(args.NzbGet)
 
     case "deluge":
+      fmt.Println("Running in deluge mode")
       plex.Deluge.Handle(args.Deluge)
   }
 }

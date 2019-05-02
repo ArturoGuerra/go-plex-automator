@@ -36,6 +36,7 @@ func (n *NzbGet) Handle(args *utils.NzbGet) error {
   switch args.NzbppTotalStatus {
   case "SUCCESS":
     err = filebot.Handle(args.NzbppCategory, n.BaseDir)
+    os.RemoveAll(args.NzbppDirectory)
     if err != nil {
       os.Exit(n.Error)
       return err
@@ -45,11 +46,13 @@ func (n *NzbGet) Handle(args *utils.NzbGet) error {
     return nil
 
   case "FAILURE":
+    os.RemoveAll(args.NzbppDirectory)
     os.Exit(n.Error)
     err = errors.New(strconv.Itoa(n.Error))
     return err
 
   default:
+    os.RemoveAll(args.NzbppDirectory)
     os.Exit(n.Error)
     err = errors.New(strconv.Itoa(n.Error))
     return err
