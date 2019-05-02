@@ -80,7 +80,7 @@ func FormatCommand(source, callback string, f *FileBot) []string {
 
 func (f *FileBot) Process(source, callback string) {
   command := FormatCommand(source, callback, f)
-  fmt.Println(command)
+  fmt.Println("Running FileBot...")
   cmd := exec.Command("filebot", command...)
   var out bytes.Buffer
   var stderr bytes.Buffer
@@ -90,11 +90,13 @@ func (f *FileBot) Process(source, callback string) {
   err := cmd.Start()
   if err != nil {
       fmt.Println(err)
+      fmt.Println("Error in filebot")
   }
   cmd.Wait()
 
   fmt.Println(stderr.String())
   fmt.Println(out.String())
+  fmt.Println("FileBot Done")
 }
 
 func (f *FileBot) Handle(mode, source string) error {

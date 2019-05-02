@@ -57,13 +57,13 @@ func (d *Deluge) Handle(args *utils.Deluge) error {
   }
 
   err = filebot.Handle(mode, d.TorrentsDir)
-  fmt.Println(err)
   if err != nil {
     return err
   }
 
   err = d.Clean(args.TorrentId)
   if err != nil {
+      fmt.Println("Error cleaning deluge: ", err)
       return err
   }
 
