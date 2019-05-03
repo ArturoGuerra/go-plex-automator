@@ -7,6 +7,7 @@ import (
   "strconv"
   "errors"
   "os"
+  "fmt"
 )
 
 type (
@@ -25,8 +26,12 @@ func New(c *config.Configuration, f *filebot.FileBot) *NzbGet {
     f,
     93,
     94,
-
   }
+}
+
+func Clean(dir string) {
+    fmt.Println("Removing Nzb File: ", dir)
+    os.RemoveAll(dir)
 }
 
 func (n *NzbGet) Handle(args *utils.NzbGet) error {
@@ -35,8 +40,9 @@ func (n *NzbGet) Handle(args *utils.NzbGet) error {
 
   switch args.NzbppTotalStatus {
   case "SUCCESS":
+    fmt.Println("Nzbget succeded at processing nzb, starting post processing")
     err = filebot.Handle(args.NzbppCategory, n.BaseDir)
-    os.RemoveAll(args.NzbppDirectory)
+    Clean(args.NzbppDirectory)
     if err != nil {
       os.Exit(n.Error)
       return err
@@ -46,13 +52,15 @@ func (n *NzbGet) Handle(args *utils.NzbGet) error {
     return nil
 
   case "FAILURE":
-    os.RemoveAll(args.NzbppDirectory)
+    fmt.Println("Nzb failed, ignoring and cleaning up")
+    Clean(args.NzbppDirectory)
     os.Exit(n.Error)
     err = errors.New(strconv.Itoa(n.Error))
     return err
 
   default:
-    os.RemoveAll(args.NzbppDirectory)
+    fmt.Println("NzbGet returned an unknown error code")
+    Clean(args.NzbppDirectory)
     os.Exit(n.Error)
     err = errors.New(strconv.Itoa(n.Error))
     return err

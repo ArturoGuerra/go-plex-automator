@@ -71,6 +71,7 @@ func (d *Deluge) Handle(args *utils.Deluge) error {
 }
 
 func (d *Deluge) Clean(id string) error {
+  fmt.Println("Starting deluge clean for: ", id)
   client := http.Client{}
   buf := new(bytes.Buffer)
   body := &RequestBody{
@@ -79,14 +80,12 @@ func (d *Deluge) Clean(id string) error {
     []string{d.Password},
   }
   json.NewEncoder(buf).Encode(body)
-  _, err := client.Post(d.Api, "application/json", buf)
+  resp, err := client.Post(d.Api, "application/json", buf)
   if err != nil {
     return err
   }
 
   d.Rid = d.Rid + 1
-
-  client = http.Client{}
 
   buf = new(bytes.Buffer)
   body = &RequestBody{
@@ -95,9 +94,22 @@ func (d *Deluge) Clean(id string) error {
     []string{id,"true"},
   }
   json.NewEncoder(buf).Encode(body)
-  _, err = client.Post(d.Api, "application/json", buf)
+  req, err := http.NewRequest("POST", d.Api, buf)
+  req.Header.Set("Content-Type", "application/json")
+
+  for _, cookie := range resp.Cookies() {
+      req.AddCookie(cookie)
+  }
+
+  resp, err = client.Do(req)
   if err != nil {
     return err
+  }
+
+  if resp.StatusCode == 200 {
+      fmt.Println("Deluge clean completed successfully")
+  } else {
+      fmt.Println("There was an error cleaning deluge, please clean the client manually")
   }
 
   return nil
