@@ -1,7 +1,7 @@
 package filebot
 
 import (
-  "config"
+  "../config"
   "bytes"
   "errors"
   "os/exec"

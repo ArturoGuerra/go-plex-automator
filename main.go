@@ -1,11 +1,11 @@
 package main
 
 import (
-  "config"
-  "handler"
-  "filebot"
-  "deluge"
-  "nzbget"
+  "./config"
+  "./handler"
+  "./filebot"
+  "./deluge"
+  "./nzbget"
   "os"
   "fmt"
 )

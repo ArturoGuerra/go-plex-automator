@@ -2,12 +2,12 @@ package deluge
 
 import (
   "net/http"
-  "filebot"
+  "../filebot"
   "encoding/json"
-  "config"
+  "../config"
   "errors"
   "bytes"
-  "utils"
+  "../utils"
   "fmt"
 )
 

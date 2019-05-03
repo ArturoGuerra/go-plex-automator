@@ -1,9 +1,9 @@
 package nzbget
 
 import (
-  "filebot"
-  "config"
-  "utils"
+  "../filebot"
+  "../config"
+  "../utils"
   "strconv"
   "errors"
   "os"

@@ -1,7 +1,7 @@
 package handler
 
 import (
-  "utils"
+  "../utils"
   "flag"
   "errors"
 )
