@@ -41,24 +41,27 @@ func New(c *config.Configuration, f *filebot.FileBot) *Deluge {
 func (d *Deluge) Handle(args *utils.Deluge) error {
   var mode string
   var err error
+  pass := false
   filebot := d.FileBot
 
   switch args.TorrentDir {
   case d.TorrentsDir + "/Shows":
     mode = "shows"
+    pass = true
     fmt.Println("Shows deluge dir")
   case d.TorrentsDir + "/Movies":
     mode = "movies"
     fmt.Println("Movies deluge dir")
+    pass = true
   default:
     err = errors.New("Invalid torrent dir")
     fmt.Println("Invalid deluge dir")
-    return err
   }
 
-  err = filebot.Handle(mode, d.TorrentsDir)
-  if err != nil {
-    return err
+  if pass {
+    if err = filebot.Handle(mode, d.TorrentsDir); err != nil {
+      return err
+    }
   }
 
   err = d.Clean(args.TorrentId)

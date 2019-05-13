@@ -62,10 +62,10 @@ func (h *Handler) Parse() (*utils.Args, error) {
     args := &utils.Args{*modePtr, &nzbGet, &deluge, *configDir}
     h.Args = args
     return args, nil
-  }
-
-  err := errors.New("Invalid mode")
-  h.Args = &utils.Args{}
-  return &utils.Args{}, err
+  } else {
+    err := errors.New("Invalid goplex mode")
+    h.Args = &utils.Args{}
+    return &utils.Args{}, err
+}
 
 }

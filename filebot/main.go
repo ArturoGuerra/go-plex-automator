@@ -6,6 +6,8 @@ import (
   "errors"
   "os/exec"
   "fmt"
+  "os"
+  "path/filepath"
 )
 
 type (
@@ -57,31 +59,22 @@ func (f *FileBot) Anime(root string) {
 
 func FormatCommand(source, callback string, f *FileBot) []string {
     var args []string
-
-    args = append(args, "-script", "fn:amc")
-    args = append(args, "--output", f.DestinationDir)
-    args = append(args, "--action", "copy")
-    args = append(args, "-non-strict")
-    args = append(args, source)
-    args = append(args, "--conflict", "override")
-    args = append(args, "--log-file", f.AmcLogs)
-
-    args = append(args, "--def", "subtitles=en,es")
-    args = append(args, "--def", "excludeList="+f.AmcExclude)
-    args = append(args, "--def", "clean=y")
-    args = append(args, "--def", "unsorted=y")
-    args = append(args, "--def", "extras=y")
-    args = append(args, "--def", "seriesFormat=\"" + f.DestinationDir + "/TV Shows/{n.replaceAll(/'/)}/Season {s.pad(2)}/{n} - {s00e00} - {t}\"")
-    args = append(args, "--def", "animeFormat=\"" + f.DestinationDir + "/Anime/{n.replaceAll(/'/)}/Season {s.pad(2)}/{n} - {s00e00} - {t}\"")
-    args = append(args, "--def", "exec=\"" + callback + "\"")
-    args = append(args, "--def", "minLengthMS=300000")
+    args = append(args, f.DestinationDir, source, f.AmcLogs, f.AmcExclude, f.DestinationDir, callback)
     return args
 }
+
+func getFileBot() string {
+    ex, _ := os.Executable()
+    return filepath.Dir(ex) + "/filebot"
+}
+
 
 func (f *FileBot) Process(source, callback string) {
   command := FormatCommand(source, callback, f)
   fmt.Println("Running FileBot...")
-  cmd := exec.Command("filebot", command...)
+  filebot := getFileBot()
+  fmt.Println(filebot, command)
+  cmd := exec.Command(filebot, command...)
   var out bytes.Buffer
   var stderr bytes.Buffer
   cmd.Stdout = &out
