@@ -44,6 +44,7 @@ func (d *Deluge) Handle(args *utils.Deluge) error {
   pass := false
   filebot := d.FileBot
 
+
   switch args.TorrentDir {
   case d.TorrentsDir + "/Shows":
     mode = "shows"

@@ -13,4 +13,4 @@ SCRIPTDIR=$(dirname $(readlink -f $0))
 
 configdir=$SCRIPTDIR/config.json
 
-$SCRIPTDIR/goplex -mode="nzbget" -configdir=$configdir -nzbget-status=$NZBPP_TOTALSTATUS -nzbget-category=$NZBPP_CATEGORY -nzbget-directory=$NZBPP_DIRECTORY
+$SCRIPTDIR/goplex -mode="nzbget" -configdir="$configdir" -nzbget-status="$NZBPP_TOTALSTATUS" -nzbget-category="$NZBPP_CATEGORY" -nzbget-directory="$NZBPP_DIRECTORY"
