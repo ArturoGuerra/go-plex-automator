@@ -50,7 +50,6 @@ func (h *Handler) Parse() (*utils.Args, error) {
   delugeTorrentDirPtr := flag.String("deluge-torrentdir", "deluge source dir", "string")
 
 
-  configDir := flag.String("configdir", "Configuration Directory", "string")
 
   flag.Parse()
 
@@ -59,7 +58,7 @@ func (h *Handler) Parse() (*utils.Args, error) {
   if validMode {
     nzbGet := utils.NzbGet{*nzbgetStatusPtr, *nzbgetCategoryPtr, *nzbgetDirectoryPtr}
     deluge := utils.Deluge{*delugeTorrentIdPtr, *delugeTorrentNamePtr, *delugeTorrentDirPtr}
-    args := &utils.Args{*modePtr, &nzbGet, &deluge, *configDir}
+    args := &utils.Args{*modePtr, &nzbGet, &deluge}
     h.Args = args
     return args, nil
   } else {

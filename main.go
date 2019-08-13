@@ -54,7 +54,11 @@ func main () {
   }
 
   plex := new(PlexAuto)
-  plex = plex.New(args.ConfigDir)
+  if configDir == "" {
+      configDir = "./plexbot.conf"
+  }
+
+  plex = plex.New(configDir)
 
   switch args.Mode {
     case "nzbget":
