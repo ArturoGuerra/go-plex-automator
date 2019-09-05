@@ -12,7 +12,7 @@ clean:
 	rm -rf bin
 
 build: clean
-	$(GOBUILD) -o bin/goplex -ldflags "-X main.configDir=$(CONFIG)" src/main.go
+	$(GOBUILD) -o bin/goplex -ldflags "-X main.configDir=$(CONFIG)" main.go
 	install -m0755 srv/deluge bin/deluge
 	install -m0755 srv/nzbget bin/nzbget
 	install -m0755 srv/filebot bin/filebot

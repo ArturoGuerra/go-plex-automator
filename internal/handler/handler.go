@@ -1,7 +1,7 @@
 package handler
 
 import (
-  "goplex/src/utils"
+  "goplex/utils"
   "flag"
   "errors"
 )
