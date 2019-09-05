@@ -2,12 +2,12 @@ package deluge
 
 import (
   "net/http"
-  "../filebot"
+  "goplex/src/filebot"
   "encoding/json"
-  "../config"
+  "goplex/src/config"
   "errors"
   "bytes"
-  "../utils"
+  "goplex/src/utils"
   "fmt"
 )
 

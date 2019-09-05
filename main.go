@@ -1,11 +1,11 @@
 package main
 
 import (
-  "./config"
-  "./handler"
-  "./filebot"
-  "./deluge"
-  "./nzbget"
+  "goplex/src/config"
+  "goplex/src/handler"
+  "goplex/src/filebot"
+  "goplex/src/deluge"
+  "goplex/src/nzbget"
   "os"
   "fmt"
 )

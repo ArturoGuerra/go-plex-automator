@@ -1,7 +1,7 @@
 package filebot
 
 import (
-  "../config"
+  "goplex/src/config"
   "bytes"
   "errors"
   "os/exec"
