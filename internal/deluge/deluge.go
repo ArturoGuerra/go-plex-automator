@@ -4,10 +4,10 @@ import (
   "net/http"
   "goplex/internal/filebot"
   "encoding/json"
-  "goplex/config"
+  "goplex/internal/config"
   "errors"
   "bytes"
-  "goplex/utils"
+  "goplex/internal/models"
   "fmt"
 )
 
@@ -38,7 +38,7 @@ func New(c *config.Configuration, f *filebot.FileBot) *Deluge {
   }
 }
 
-func (d *Deluge) Handle(args *utils.Deluge) error {
+func (d *Deluge) Handle(args *models.Deluge) error {
   var mode string
   var err error
   pass := false

@@ -1,11 +1,12 @@
 package main
 
 import (
-  "goplex/config"
-  "goplex/internal/handler"
+  "goplex/internal/config"
+  "goplex/internal/parameters"
   "goplex/internal/filebot"
   "goplex/internal/deluge"
   "goplex/internal/nzbget"
+  "goplex/internal/fileloader"
   "os"
   "fmt"
 )
@@ -21,8 +22,8 @@ type PlexAuto struct {
 
 }
 
-func (p PlexAuto) New(configFilename string) *PlexAuto {
-  config, err := config.LoadConfig(configFilename)
+func New(configFilename string) *PlexAuto {
+  config, err := fileloader.LoadConfig(configFilename)
   if err != nil {
     fmt.Println(err)
     os.Exit(3)
@@ -41,8 +42,7 @@ func (p PlexAuto) New(configFilename string) *PlexAuto {
 }
 
 func main () {
-  h := handler.New()
-  args, err := h.Parse()
+  args, err := parameters.Parse()
   if err != nil {
     fmt.Println(err)
     os.Exit(3)
@@ -53,12 +53,11 @@ func main () {
     os.Exit(3)
   }
 
-  plex := new(PlexAuto)
   if configDir == "" {
       configDir = "./plexbot.conf"
   }
 
-  plex = plex.New(configDir)
+  plex := New(configDir)
 
   switch args.Mode {
     case "nzbget":

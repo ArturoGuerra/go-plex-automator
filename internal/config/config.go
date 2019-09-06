@@ -1,10 +1,5 @@
 package config
 
-import (
-  "encoding/json"
-  "io/ioutil"
-)
-
 type (
   FileBot struct {
     Amc string `json:"amc"`
@@ -40,18 +35,3 @@ type (
     CouchPotato CouchPotato `json:"couchpotato"`
   }
 )
-
-func LoadConfig(filename string) (Configuration, error) {
-  bytes, err := ioutil.ReadFile(filename)
-  if err != nil {
-    return Configuration{}, err
-  }
-
-  var c Configuration
-  err = json.Unmarshal(bytes, &c)
-  if err != nil {
-    return Configuration{}, err
-  }
-
-  return c, err
-}

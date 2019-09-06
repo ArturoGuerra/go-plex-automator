@@ -2,8 +2,8 @@ package nzbget
 
 import (
   "goplex/internal/filebot"
-  "goplex/config"
-  "goplex/utils"
+  "goplex/internal/config"
+  "goplex/internal/models"
   "strconv"
   "errors"
   "os"
@@ -34,7 +34,7 @@ func Clean(dir string) {
     os.RemoveAll(dir)
 }
 
-func (n *NzbGet) Handle(args *utils.NzbGet) error {
+func (n *NzbGet) Handle(args *models.NzbGet) error {
   filebot := n.FileBot
   var err error
 

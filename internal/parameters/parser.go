@@ -1,31 +1,10 @@
-package handler
+package parameters
 
 import (
-  "goplex/utils"
+  "goplex/internal/models"
   "flag"
   "errors"
 )
-/*
-mode = nzbget, deluge
-nzbget:
-  NZBPP_TOTALSTATUS
-  NZBPP_CATEGORY
-  NZBPP_DIRECTORY
-
-deluge:
-  TORRENT_ID
-  TORRENT_NAME
-  TORRENT_DIR
-  IMPORTANT: Requires deluge web api to clean finished torrents to prevent garbage collection
-*/
-
-type Handler struct {
-  Args *utils.Args
-}
-
-func New() *Handler {
-  return &Handler{}
-}
 
 func stringInArray(str string, list []string) bool {
   for _, v := range list {
@@ -37,7 +16,7 @@ func stringInArray(str string, list []string) bool {
   return false
 }
 
-func (h *Handler) Parse() (*utils.Args, error) {
+func Parse() (*models.Config, error) {
   validModes := []string{"nzbget", "deluge"}
   modePtr := flag.String("mode", "[nzbget, deluge]", "string")
 
@@ -49,22 +28,17 @@ func (h *Handler) Parse() (*utils.Args, error) {
   delugeTorrentNamePtr := flag.String("deluge-torrentname", "name of torrent", "string")
   delugeTorrentDirPtr := flag.String("deluge-torrentdir", "deluge source dir", "string")
 
-
-
   flag.Parse()
 
   validMode := stringInArray(*modePtr, validModes)
 
   if validMode {
-    nzbGet := utils.NzbGet{*nzbgetStatusPtr, *nzbgetCategoryPtr, *nzbgetDirectoryPtr}
-    deluge := utils.Deluge{*delugeTorrentIdPtr, *delugeTorrentNamePtr, *delugeTorrentDirPtr}
-    args := &utils.Args{*modePtr, &nzbGet, &deluge}
-    h.Args = args
-    return args, nil
+    nzbGet := models.NzbGet{*nzbgetStatusPtr, *nzbgetCategoryPtr, *nzbgetDirectoryPtr}
+    deluge := models.Deluge{*delugeTorrentIdPtr, *delugeTorrentNamePtr, *delugeTorrentDirPtr}
+    config := &models.Config{*modePtr, &nzbGet, &deluge}
+    return config, nil
   } else {
     err := errors.New("Invalid goplex mode")
-    h.Args = &utils.Args{}
-    return &utils.Args{}, err
-}
-
+    return &models.Config{}, err
+  }
 }

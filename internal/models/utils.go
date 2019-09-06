@@ -1,4 +1,4 @@
-package utils
+package models
 
 type (
   NzbGet struct {
@@ -13,7 +13,7 @@ type (
     TorrentDir string // TORRENT_DIR
   }
 
-  Args struct {
+  Config struct {
     Mode string
     NzbGet *NzbGet
     Deluge *Deluge

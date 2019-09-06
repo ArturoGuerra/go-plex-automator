@@ -1,7 +1,7 @@
 package filebot
 
 import (
-  "goplex/config"
+  "goplex/internal/config"
   "bytes"
   "errors"
   "os/exec"
@@ -23,17 +23,14 @@ type (
 )
 
 func New(c *config.Configuration) *FileBot {
-  csr := c.SickRage
-  ccp := c.CouchPotato
-  cfb := c.FileBot
   return &FileBot{
     c.Plex,
-    csr.Api,
-    csr.Url,
-    ccp.Api,
-    ccp.Url,
-    cfb.Logs,
-    cfb.Amc,
+    c.SickRage.Api,
+    c.SickRage.Url,
+    c.CouchPotato.Api,
+    c.CouchPotato.Url,
+    c.FileBot.Logs,
+    c.FileBot.Amc,
   }
 }
 
