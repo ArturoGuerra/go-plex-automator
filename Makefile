@@ -2,11 +2,11 @@
 
 PREFIX = /usr/local
 GOBUILD = go build
-GOGET = go get -d -v
+GORUN = go run
 CONFIG_DIR = /etc/plexbot
 CONFIG = $(CONFIG_DIR)/plexbot.conf
 
-all: deps clean build
+all: clean build
 
 clean:
 	rm -rf bin
@@ -33,5 +33,5 @@ reinstall:
 	install -d -m0755 $(PREFIX)/plexbot/bin
 	install -m0755 bin/* $(PREFIX)/plexbot/bin
 
-deps:
-	$(GOGET) ./...
+test:
+	$(GORUN) cmd/goplex/main.go
