@@ -1,7 +1,7 @@
 package filebot
 
 import (
-  "goplex/internal/config"
+  "github.com/arturoguerra/goautoplex/internal/config"
   "bytes"
   "errors"
   "os/exec"

@@ -3,7 +3,7 @@ package fileloader
 import (
     "io/ioutil"
     "encoding/json"
-    "goplex/internal/config"
+    "github.com/arturoguerra/goautoplex/internal/config"
 )
 
 func LoadConfig(filename string) (config.Configuration, error) {

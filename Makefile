@@ -12,7 +12,7 @@ clean:
 	rm -rf bin
 
 build: clean
-	$(GOBUILD) -o bin/goplex -ldflags "-X main.configDir=$(CONFIG)" cmd/goplex/main.go
+	$(GOBUILD) -o bin/goautoplex -ldflags "-X main.configDir=$(CONFIG)" cmd/goautoplex/main.go
 	install -m0755 srv/deluge bin/deluge
 	install -m0755 srv/nzbget bin/nzbget
 	install -m0755 srv/filebot bin/filebot
@@ -34,4 +34,4 @@ reinstall:
 	install -m0755 bin/* $(PREFIX)/plexbot/bin
 
 test:
-	$(GORUN) cmd/goplex/main.go
+	$(GORUN) cmd/goautoplex/main.go

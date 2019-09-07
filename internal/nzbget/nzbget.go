@@ -1,9 +1,9 @@
 package nzbget
 
 import (
-  "goplex/internal/filebot"
-  "goplex/internal/config"
-  "goplex/internal/models"
+  "github.com/arturoguerra/goautoplex/internal/filebot"
+  "github.com/arturoguerra/goautoplex/internal/config"
+  "github.com/arturoguerra/goautoplex/internal/models"
   "strconv"
   "errors"
   "os"

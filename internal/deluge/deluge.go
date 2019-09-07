@@ -2,12 +2,12 @@ package deluge
 
 import (
   "net/http"
-  "goplex/internal/filebot"
+  "github.com/arturoguerra/goautoplex/internal/filebot"
   "encoding/json"
-  "goplex/internal/config"
+  "github.com/arturoguerra/goautoplex/internal/config"
   "errors"
   "bytes"
-  "goplex/internal/models"
+  "github.com/arturoguerra/goautoplex/internal/models"
   "fmt"
 )
 

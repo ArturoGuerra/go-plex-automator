@@ -1,7 +1,7 @@
 package parameters
 
 import (
-  "goplex/internal/models"
+  "github.com/arturoguerra/goautoplex/internal/models"
   "flag"
   "errors"
 )
@@ -38,7 +38,7 @@ func Parse() (*models.Config, error) {
     config := &models.Config{*modePtr, &nzbGet, &deluge}
     return config, nil
   } else {
-    err := errors.New("Invalid goplex mode")
+    err := errors.New("Invalid github.com/arturoguerra/goautoplex mode")
     return &models.Config{}, err
   }
 }

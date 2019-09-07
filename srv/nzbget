@@ -11,4 +11,4 @@
 
 SCRIPTDIR=$(dirname $(readlink -f $0))
 
-$SCRIPTDIR/goplex -mode="nzbget" -nzbget-status="$NZBPP_TOTALSTATUS" -nzbget-category="$NZBPP_CATEGORY" -nzbget-directory="$NZBPP_DIRECTORY"
+$SCRIPTDIR/goautoplex -mode="nzbget" -nzbget-status="$NZBPP_TOTALSTATUS" -nzbget-category="$NZBPP_CATEGORY" -nzbget-directory="$NZBPP_DIRECTORY"

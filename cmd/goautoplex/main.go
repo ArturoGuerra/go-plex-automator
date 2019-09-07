@@ -1,12 +1,12 @@
 package main
 
 import (
-  "goplex/internal/config"
-  "goplex/internal/parameters"
-  "goplex/internal/filebot"
-  "goplex/internal/deluge"
-  "goplex/internal/nzbget"
-  "goplex/internal/fileloader"
+  "github.com/arturoguerra/goautoplex/internal/config"
+  "github.com/arturoguerra/goautoplex/internal/parameters"
+  "github.com/arturoguerra/goautoplex/internal/filebot"
+  "github.com/arturoguerra/goautoplex/internal/deluge"
+  "github.com/arturoguerra/goautoplex/internal/nzbget"
+  "github.com/arturoguerra/goautoplex/internal/fileloader"
   "os"
   "fmt"
 )
