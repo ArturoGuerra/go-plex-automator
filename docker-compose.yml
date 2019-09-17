@@ -1,0 +1,13 @@
+version: '3'
+services:
+  plexbot:
+    build: .
+    environment:
+      FILEBOT_DESTDIR: "/plex"
+      FILEBOT_AMCLOGS: "/plex/amc.log"
+      FILEBOT_AMCEXCLUDE: "/plex/amc.txt"
+      DELUGE_BASEDIR: "/downloads/deluge"
+      NZBGET_BASEDIR: "/downloads/nzbget"
+    ports:
+      - 8080:8080
+
