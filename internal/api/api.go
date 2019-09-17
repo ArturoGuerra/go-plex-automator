@@ -36,7 +36,7 @@ func (a *Api) NzbGetHandler(c echo.Context) (err error) {
         return c.NoContent(http.StatusBadRequest)
     }
 
-    a.NzbGet.Handle(d)
+    go a.NzbGet.Handle(d)
 
     return c.NoContent(http.StatusOK)
 }
