@@ -1,0 +1,3 @@
+#!/bin/sh
+
+/usr/bin/filebot -script fn:amc --output $1 --action copy -non-strict $2 --conflict override --log-file $3 --def subtitles=en,es --def excludeList=$4 --def clean=y --def unsorted=y --def extras=y --def seriesFormat="$1/TV Shows/{n.replaceAll(/'/)}/Season {s.pad(2)}/{n} - {s00e00} - {t}" --def animeFormat="$1/Anime/{n.replaceAll(/'/)}/Season {s.pad(2)}/{n} - {s00e00} - {t}" --def minLengthMS=300000
